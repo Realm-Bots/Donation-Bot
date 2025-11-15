@@ -29,9 +29,11 @@ Tʜᴀɴᴋs ғᴏʀ ʏᴏᴜʀ ɪɴᴛᴇʀᴇsᴛ ɪɴ ᴅᴏɴᴀᴛɪᴏɴ �
 CRYPTO_TEXT = f"""
 **Mᴀɪɴ Cʀʏᴘᴛᴏ Aᴅᴅʀᴇss:**
 
-**BTC:** `1DxGWYXeSMqqpouJeHEqHsLuxGv1ydkCoe`
+**BTC:** `135G6kyKpfwZbHXUYu4gsJaoJPBnrDDSbQ`
 
-If you need another crypto address, please [contact my master here](tg://user?id={OWNER_ID}).
+**TON:** `UQCwKMw3WvaEvZ9SIsmc4Mxuz4Yu_-5SsFb2JUEH70Lz0ssx`
+
+**OPBNB:** `0x456945634e4d9d9b9a6069f72a869963281aa40e`
 """
 
 STARS_TEXT = "**How many stars do you want to donate?**"
@@ -39,11 +41,7 @@ STARS_TEXT = "**How many stars do you want to donate?**"
 # --- BUTTONS ---
 MAIN_MENU_BUTTONS = {
     "Crypto": "callback:crypto",
-    "Dana": "url:https://link.dana.id/qr/yourcode",
-    "Trakteer": "url:https://trakteer.id/yourusername",
-    "Telegram Stars": "callback:stars",
-    "Github Sponsors": "url:https://github.com/sponsors/yourusername",
-    "Paypal": "url:https://paypal.me/yourusername"
+    "Telegram Stars": "callback:stars""
 }
 
 STARS_TIERS = {
