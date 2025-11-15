@@ -31,7 +31,7 @@ def get_main_menu_keyboard():
     return InlineKeyboardMarkup([buttons[i:i+2] for i in range(0, len(buttons), 2)])
 
 def get_crypto_menu_keyboard():
-    return InlineKeyboardMarkup([[InlineKeyboardButton("« Back", callback_data="main_menu")]])
+    return InlineKeyboardMarkup([[InlineKeyboardButton("« Bᴀᴄᴋ", callback_data="main_menu")]])
 
 def get_stars_menu_keyboard():
     buttons = []
@@ -40,7 +40,7 @@ def get_stars_menu_keyboard():
         callback_data = f"stars:{amount}"
         buttons.append(InlineKeyboardButton(label, callback_data=callback_data))
     keyboard_layout = [buttons[i:i+2] for i in range(0, len(buttons), 2)]
-    keyboard_layout.append([InlineKeyboardButton("« Back", callback_data="main_menu")])
+    keyboard_layout.append([InlineKeyboardButton("« Bᴀᴄᴋ", callback_data="main_menu")])
     return InlineKeyboardMarkup(keyboard_layout)
 
 
