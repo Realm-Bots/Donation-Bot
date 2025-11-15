@@ -19,8 +19,8 @@ app = Client(
     bot_token=config.BOT_TOKEN
 )
 
-# --- Button Generation Functions (No Change) ---
-# ... (copy the 3 get_*_keyboard functions from the previous version) ...
+# --- Button Generation Functions ---
+
 def get_main_menu_keyboard():
     buttons = []
     for text, data in config.MAIN_MENU_BUTTONS.items():
@@ -43,11 +43,11 @@ def get_stars_menu_keyboard():
     keyboard_layout.append([InlineKeyboardButton("« Back", callback_data="main_menu")])
     return InlineKeyboardMarkup(keyboard_layout)
 
+
 # --- Command & Message Handlers ---
 
 @app.on_message(filters.command("start") & filters.private)
 async def start_handler(client: Client, message: Message):
-    # Now sends a photo with a caption
     await message.reply_photo(
         photo=config.START_PIC_URL,
         caption=config.START_TEXT,
@@ -60,17 +60,24 @@ async def profile_handler(client: Client, message: Message):
     user_id = message.from_user.id
     stats = db.get_user_stats(user_id)
 
-    if not stats:
-        await message.reply_text("You haven't made any donations yet. Use /start to see how!")
-        return
+    # Set default values for a non-donator
+    total_donated_display = "None"
+    last_tier_display = "None"
 
+    # If the user has donation stats, overwrite the default values
+    if stats:
+        total_donated_display = f"⭐ {stats['total_donated']}"
+        last_tier_display = stats['last_tier_donated']
+
+    # Construct the profile text using the variables
     profile_text = (
         "👤 **Your Donation Profile**\n\n"
-        f"**User ID:** `{stats['user_id']}`\n"
-        f"**Total Donation:** `⭐ {stats['total_donated']}` Stars\n"
-        f"**Last Donated Tier:** `{stats['last_tier_donated']}`"
+        f"**User ID:** `{user_id}`\n"
+        f"**Total Donation:** `{total_donated_display}`\n"
+        f"**Last Donated Tier:** `{last_tier_display}`"
     )
     
+    # Send the photo with the caption, which now works for everyone
     await message.reply_photo(
         photo=config.PROFILE_PIC_URL,
         caption=profile_text,
@@ -89,12 +96,8 @@ async def leaderboard_handler(client: Client, message: Message):
     medals = ["🥇", "🥈", "🥉"]
 
     for i, donor in enumerate(top_donors):
-        # Use medals for top 3, numbers for the rest
         place = medals[i] if i < 3 else f"**{i + 1}.**"
-        
-        # Create a mention link for the user
         user_mention = f"[{donor['first_name']}](tg://user?id={donor['user_id']})"
-        
         leaderboard_text += f"{place} {user_mention} - `⭐ {donor['total_donated']}` Stars\n"
         
     await message.reply_text(leaderboard_text, parse_mode=enums.ParseMode.MARKDOWN, disable_web_page_preview=True)
@@ -102,32 +105,39 @@ async def leaderboard_handler(client: Client, message: Message):
 
 @app.on_callback_query()
 async def menu_handler(client: Client, callback_query: CallbackQuery):
-    # ... (This function remains exactly the same as the last version) ...
     data = callback_query.data
     
     try:
         if data == "main_menu":
-            await callback_query.message.edit_caption(
+             # If coming from a text-only menu, we can't edit it back to a photo.
+             # So we delete and send a new one for a consistent experience.
+            await callback_query.message.delete()
+            await client.send_photo(
+                chat_id=callback_query.from_user.id,
+                photo=config.START_PIC_URL,
                 caption=config.START_TEXT,
                 reply_markup=get_main_menu_keyboard(),
                 parse_mode=enums.ParseMode.MARKDOWN
             )
+
         elif data == "crypto":
-            # Can't edit a photo caption to text, so we edit the whole message
             await callback_query.message.edit_text(
                 text=config.CRYPTO_TEXT,
                 reply_markup=get_crypto_menu_keyboard(),
                 parse_mode=enums.ParseMode.MARKDOWN
             )
+
         elif data == "stars":
             await callback_query.message.edit_text(
                 text=config.STARS_TEXT,
                 reply_markup=get_stars_menu_keyboard(),
                 parse_mode=enums.ParseMode.MARKDOWN
             )
+
         elif data.startswith("stars:"):
             amount = int(data.split(":")[1])
             tier_name = config.STARS_TIERS.get(str(amount), "Donation")
+            
             await client.send_invoice(
                 chat_id=callback_query.from_user.id,
                 title=f"{tier_name} Tier Donation",
@@ -137,6 +147,7 @@ async def menu_handler(client: Client, callback_query: CallbackQuery):
                 prices=[LabeledPrice(f"{amount} Telegram Stars", amount)]
             )
             await callback_query.answer(f"Preparing {amount} Stars invoice...", show_alert=False)
+
     except MessageNotModified:
         await callback_query.answer()
     except Exception as e:
@@ -150,7 +161,6 @@ async def successful_payment_handler(client: Client, message: Message):
         amount = message.successful_payment.total_amount
         tier_name = config.STARS_TIERS.get(str(amount), "Donation")
         
-        # --- DATABASE INTEGRATION ---
         db.record_donation(
             user_id=message.from_user.id,
             first_name=message.from_user.first_name,
@@ -158,7 +168,6 @@ async def successful_payment_handler(client: Client, message: Message):
             amount=amount,
             tier=tier_name
         )
-        # ---------------------------
 
         await message.reply_text(
             f"🎉 Thank you for your donation of **{amount} Stars** ({tier_name} Tier)!\n\n"
@@ -168,6 +177,7 @@ async def successful_payment_handler(client: Client, message: Message):
 
 # --- Main Execution ---
 async def main():
+    """Main function to start the bot and keep it running."""
     await app.start()
     me = await app.get_me()
     logging.info(f"Bot @{me.username} started successfully!")
