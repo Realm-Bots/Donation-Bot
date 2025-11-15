@@ -20,16 +20,15 @@ PROFILE_PIC_URL = "https://graph.org/file/ab1c4882db6a02add069e-2d59575f154d39ac
 OWNER_ID = 123456789 
 
 START_TEXT = """
-You can support the bot development by donating through the link below.
-Donations will be used for bot development and also server rental costs for this bot.
-_*Thank you very much for your donation*_ 🙏
+**Yᴏᴜ ᴄᴀɴ sᴜᴘᴘᴏʀᴛ @TeamMayhem ʙʏ ᴅᴏɴᴀᴛɪɴɢ ᴛʜʀᴏᴜɢʜ ᴛʜᴇ ʟɪɴᴋ ʙᴇʟᴏᴡ.
+Dᴏɴᴀᴛɪᴏɴs ᴡɪʟʟ ʙᴇ ᴜsᴇᴅ ғᴏʀ ᴏᴜʀ ʙᴏᴛs sᴇʀᴠᴇʀ ʀᴇɴᴛᴀʟ ᴄᴏsᴛs.
 
-**Bank Jago:** `wulan17`
+Tʜᴀɴᴋs ғᴏʀ ʏᴏᴜʀ ɪɴᴛᴇʀᴇsᴛ ɪɴ ᴅᴏɴᴀᴛɪᴏɴ 🙏**
 """
 
 CRYPTO_TEXT = f"""
-**Main Crypto Address:** ❞
-(Same address for same network)
+**Mᴀɪɴ Cʀʏᴘᴛᴏ Aᴅᴅʀᴇss:**
+
 **BTC:** `1DxGWYXeSMqqpouJeHEqHsLuxGv1ydkCoe`
 
 If you need another crypto address, please [contact my master here](tg://user?id={OWNER_ID}).
