@@ -175,15 +175,7 @@ async def successful_payment_handler(client: Client, message: Message):
             parse_mode=enums.ParseMode.MARKDOWN
         )
 
-@app.on_callback_query()
-async def menu_handler(client: Client, callback_query: CallbackQuery):
-    data = callback_query.data
-    
-    try:
-        if data == "close_menu":
-            await callback_query.message.delete()
-            await callback_query.answer("Closed.")
-            return
+
 # --- Main Execution ---
 async def main():
     """Main function to start the bot and keep it running."""
