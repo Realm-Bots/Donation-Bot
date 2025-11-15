@@ -1,6 +1,6 @@
 # bot.py
 import logging
-from pyrogram import Client, filters, enums
+from pyrogram import Client, filters, enums, idle  # <-- ADD idle HERE
 from pyrogram.types import (
     Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton,
     LabeledPrice
@@ -120,7 +120,7 @@ async def main():
     await app.start()
     me = await app.get_me()
     logging.info(f"Bot @{me.username} started successfully!")
-    await app.idle() # This keeps the bot running until you stop it (e.g., with Ctrl+C)
+    await idle()  # <-- CHANGE THIS LINE
     await app.stop()
 
 if __name__ == "__main__":
