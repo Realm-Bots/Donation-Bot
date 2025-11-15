@@ -42,8 +42,8 @@ STARS_TEXT = "**How many stars do you want to donate?**"
 
 # --- BUTTONS ---
 MAIN_MENU_BUTTONS = {
-    "ᴄʀʏᴘᴛᴏ": "callback:crypto",
-    "ᴛᴇʟᴇɢʀᴀᴍ sᴛᴀʀs": "callback:stars""
+    "Crypto": "callback:crypto",
+    "Telegram Stars": "callback:stars""
 }
 
 STARS_TIERS = {
