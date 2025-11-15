@@ -1,3 +1,4 @@
 pyrofork
 python-dotenv
 uvloop 
+pymongo
