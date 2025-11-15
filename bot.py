@@ -99,7 +99,7 @@ async def menu_handler(client: Client, callback_query: CallbackQuery):
     try:
         if data == "close_menu":
             await callback_query.message.delete()
-            await callback_query.answer("Menu closed.")
+            await callback_query.answer("ᴍᴇɴᴜ ᴄʟᴏsᴇᴅ.")
             return
         if data == "main_menu":
             await callback_query.message.delete()
@@ -135,7 +135,7 @@ async def menu_handler(client: Client, callback_query: CallbackQuery):
             await client.send_invoice(
                 chat_id=user_id,
                 title=f"{tier_name} Tier Donation",
-                description=f"Thank you for donating {amount} Stars to support us!",
+                description=f"ᴛʜᴀɴᴋ ʏᴏᴜ ғᴏʀ ᴅᴏɴᴀᴛɪɴɢ {amount} Sᴛᴀʀs ᴛᴏ sᴜᴘᴘᴏʀᴛ ᴜs!",
                 payload=f"stars-donation-{user_id}-{amount}",
                 currency="XTR",
                 prices=[LabeledPrice(f"{amount} Telegram Stars", amount)]
