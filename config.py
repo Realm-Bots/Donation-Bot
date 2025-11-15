@@ -17,7 +17,7 @@ START_PIC_URL = "https://graph.org/file/ab1c4882db6a02add069e-2d59575f154d39acda
 PROFILE_PIC_URL = "https://graph.org/file/ab1c4882db6a02add069e-2d59575f154d39acda.jpg"
 
 # --- TEXTS ---
-OWNER_ID = 123456789 
+OWNER_ID = 7099729191 
 
 START_TEXT = """
 **Yᴏᴜ ᴄᴀɴ sᴜᴘᴘᴏʀᴛ @TeamMayhem ʙʏ ᴅᴏɴᴀᴛɪɴɢ ᴛʜʀᴏᴜɢʜ ᴛʜᴇ ʟɪɴᴋ ʙᴇʟᴏᴡ.
@@ -34,6 +34,8 @@ CRYPTO_TEXT = f"""
 **TON:** `UQCwKMw3WvaEvZ9SIsmc4Mxuz4Yu_-5SsFb2JUEH70Lz0ssx`
 
 **OPBNB:** `0x456945634e4d9d9b9a6069f72a869963281aa40e`
+
+**ɪғ ʏᴏᴜ ɴᴇᴇᴅ ᴀɴᴏᴛʜᴇʀ ᴄʀʏᴘᴛᴏ ᴀᴅᴅʀᴇss, ᴘʟᴇᴀsᴇ [ᴄᴏɴᴛᴀᴄᴛ ᴍʏ ᴍᴀsᴛᴇʀ ʜᴇʀᴇ](tg://user?id={OWNER_ID}).**
 """
 
 STARS_TEXT = "**How many stars do you want to donate?**"
