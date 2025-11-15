@@ -1,6 +1,6 @@
 # bot.py
 import logging
-from pyrogram import Client, filters, enums, idle  # <-- ADD idle HERE
+from pyrogram import Client, filters, enums, idle
 from pyrogram.types import (
     Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton,
     LabeledPrice
@@ -85,12 +85,13 @@ async def menu_handler(client: Client, callback_query: CallbackQuery):
         elif data.startswith("stars:"):
             amount = int(data.split(":")[1])
             tier_name = config.STARS_TIERS.get(str(amount), "Donation")
+            
+            # This is the corrected call without provider_token
             await client.send_invoice(
                 chat_id=callback_query.from_user.id,
                 title=f"{tier_name} Tier Donation",
                 description=f"Thank you for donating {amount} Stars to support us!",
                 payload=f"stars-donation-{callback_query.from_user.id}-{amount}",
-                provider_token="",
                 currency="XTR",
                 prices=[LabeledPrice(f"{amount} Telegram Stars", amount)]
             )
@@ -120,7 +121,7 @@ async def main():
     await app.start()
     me = await app.get_me()
     logging.info(f"Bot @{me.username} started successfully!")
-    await idle()  # <-- CHANGE THIS LINE
+    await idle()
     await app.stop()
 
 if __name__ == "__main__":
