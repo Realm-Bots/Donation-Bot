@@ -13,8 +13,8 @@ MONGO_URI = os.environ.get("MONGO_URI") # <-- NEW
 
 # --- PICTURES ---
 # Replace these with direct links to your images
-START_PIC_URL = "https://i.imgur.com/8V1sV2b.jpeg"
-PROFILE_PIC_URL = "https://i.imgur.com/m852G7A.jpeg"
+START_PIC_URL = "https://graph.org/file/ab1c4882db6a02add069e-2d59575f154d39acda.jpg"
+PROFILE_PIC_URL = "https://graph.org/file/ab1c4882db6a02add069e-2d59575f154d39acda.jpg"
 
 # --- TEXTS ---
 OWNER_ID = 123456789 
