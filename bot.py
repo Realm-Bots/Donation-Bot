@@ -173,7 +173,7 @@ async def custom_amount_handler(client: Client, message: Message):
     await client.send_invoice(
         chat_id=user_id,
         title="Custom Donation",
-        description=f"Thank you for donating {amount} Stars to support us!",
+        description=f"ᴛʜᴀɴᴋ ʏᴏᴜ ғᴏʀ ᴅᴏɴᴀᴛɪɴɢ {amount} Sᴛᴀʀs ᴛᴏ sᴜᴘᴘᴏʀᴛ ᴜs!",
         payload=f"stars-donation-{user_id}-{amount}",
         currency="XTR",
         prices=[LabeledPrice(f"{amount} Telegram Stars", amount)]
