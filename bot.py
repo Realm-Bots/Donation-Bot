@@ -1,24 +1,59 @@
 # bot.py
+import os
 import logging
+from flask import Flask, request
 from pyrogram import Client, filters, enums
 from pyrogram.types import (
-    Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton,
-    LabeledPrice
+    Update, Message, CallbackQuery, InlineKeyboardMarkup, 
+    InlineKeyboardButton, LabeledPrice
 )
 from pyrogram.errors import MessageNotModified
 
+# --- CONFIG AND BASIC SETUP ---
 import config
 
-# --- Basic Bot Setup ---
 logging.basicConfig(level=logging.INFO)
+
+# Initialize the Flask app, which is our web server
+server = Flask(__name__)
+
+# Initialize the Pyrogram client
+# We use in_memory=True because Vercel has an ephemeral filesystem.
 app = Client(
     "DonationMenuBot",
     api_id=config.API_ID,
     api_hash=config.API_HASH,
-    bot_token=config.BOT_TOKEN
+    bot_token=config.BOT_TOKEN,
+    in_memory=True 
 )
 
-# --- Button Generation Functions (No changes here) ---
+# --- WEBHOOK ENTRY POINT ---
+# This is the single URL that Telegram will send all updates to.
+@server.route(f"/{config.BOT_TOKEN}", methods=["POST"])
+async def webhook_handler():
+    try:
+        # Get the JSON data from Telegram's request
+        update_json = request.get_json()
+        
+        # Pyrogram needs to parse this JSON into its internal Update object
+        update = await app.parser.parse(update_json)
+
+        # This is the magic part: Pyrogram's dispatcher will now find the
+        # correct handler (@app.on_message, @app.on_callback_query, etc.)
+        # and run it, just like it did with long polling.
+        await app.process_updates(update, None)
+
+        # Tell Telegram we successfully received the update
+        return "OK", 200
+    except Exception as e:
+        logging.error(f"Error in webhook_handler: {e}")
+        return "Error", 500
+
+# ==============================================================================
+#  !!! ALL YOUR ORIGINAL BOT LOGIC IS BELOW AND UNCHANGED !!!
+# ==============================================================================
+
+# --- Button Generation Functions ---
 
 def get_main_menu_keyboard():
     buttons = []
@@ -42,22 +77,20 @@ def get_stars_menu_keyboard():
     keyboard_layout.append([InlineKeyboardButton("« Back", callback_data="main_menu")])
     return InlineKeyboardMarkup(keyboard_layout)
 
-
-# --- Handlers (Updated with parse_mode) ---
+# --- Handlers ---
 
 @app.on_message(filters.command("start") & filters.private)
 async def start_handler(client: Client, message: Message):
-    """Handler for the /start command. Sends the main menu."""
     await message.reply_text(
         text=config.START_TEXT,
         reply_markup=get_main_menu_keyboard(),
         disable_web_page_preview=True,
-        parse_mode=enums.ParseMode.MARKDOWN  # <-- ADDED
+        parse_mode=enums.ParseMode.MARKDOWN
     )
 
 @app.on_callback_query()
 async def menu_handler(client: Client, callback_query: CallbackQuery):
-    """Handles all menu navigation and actions."""
+    """This function is still here and is essential! It handles all button presses."""
     data = callback_query.data
     
     try:
@@ -66,7 +99,7 @@ async def menu_handler(client: Client, callback_query: CallbackQuery):
                 text=config.START_TEXT,
                 reply_markup=get_main_menu_keyboard(),
                 disable_web_page_preview=True,
-                parse_mode=enums.ParseMode.MARKDOWN  # <-- ADDED
+                parse_mode=enums.ParseMode.MARKDOWN
             )
         
         elif data == "crypto":
@@ -74,14 +107,14 @@ async def menu_handler(client: Client, callback_query: CallbackQuery):
                 text=config.CRYPTO_TEXT,
                 reply_markup=get_crypto_menu_keyboard(),
                 disable_web_page_preview=True,
-                parse_mode=enums.ParseMode.MARKDOWN  # <-- ALREADY HERE, BUT GOOD TO CONFIRM
+                parse_mode=enums.ParseMode.MARKDOWN
             )
 
         elif data == "stars":
             await callback_query.edit_message_text(
                 text=config.STARS_TEXT,
                 reply_markup=get_stars_menu_keyboard(),
-                parse_mode=enums.ParseMode.MARKDOWN  # <-- ADDED
+                parse_mode=enums.ParseMode.MARKDOWN
             )
 
         elif data.startswith("stars:"):
@@ -106,7 +139,6 @@ async def menu_handler(client: Client, callback_query: CallbackQuery):
 
 @app.on_message(filters.successful_payment)
 async def successful_payment_handler(client: Client, message: Message):
-    """Handles a successful Stars payment."""
     if message.successful_payment.currency == "XTR":
         amount = message.successful_payment.total_amount
         tier_name = config.STARS_TIERS.get(str(amount), "Donation")
@@ -114,7 +146,7 @@ async def successful_payment_handler(client: Client, message: Message):
         await message.reply_text(
             f"🎉 Thank you so much for your generous donation of **{amount} Stars** ({tier_name} Tier)! "
             "Your support means the world to us. ❤️",
-            parse_mode=enums.ParseMode.MARKDOWN  # <-- ADDED
+            parse_mode=enums.ParseMode.MARKDOWN
         )
 
 # --- Main Execution (No changes here) ---
