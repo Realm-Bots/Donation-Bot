@@ -147,29 +147,38 @@ async def menu_handler(client: Client, callback_query: CallbackQuery):
         logging.error(f"Error in menu_handler: {e}")
         await callback_query.answer("An error occurred.", show_alert=True)
 
-# --- THIS IS THE CORRECTED LINE ---
-@app.on_message(filters.private & filters.text & ~filters.command)
+
+# --- THIS IS THE CORRECTED FUNCTION ---
+@app.on_message(filters.private & filters.text)
 async def custom_amount_handler(client: Client, message: Message):
     user_id = message.from_user.id
-    if user_states.get(user_id) == "awaiting_custom_amount":
-        user_states.pop(user_id, None)
-        try:
-            amount = int(message.text)
-            if amount <= 0:
-                await message.reply_text("⚠️ Please enter a positive number.")
-                return
-        except ValueError:
-            await message.reply_text("⚠️ That doesn't look like a valid number. Please try again.")
+    
+    # Check if we are waiting for an amount from this user. If not, do nothing.
+    if user_states.get(user_id) != "awaiting_custom_amount":
+        return
+    
+    # Clear the state immediately so this doesn't trigger again
+    user_states.pop(user_id, None)
+    
+    try:
+        amount = int(message.text)
+        if amount <= 0:
+            await message.reply_text("⚠️ Please enter a positive number.")
             return
-        tier_name = f"{amount} Stars (Custom)"
-        await client.send_invoice(
-            chat_id=user_id,
-            title="Custom Donation",
-            description=f"Thank you for donating {amount} Stars to support us!",
-            payload=f"stars-donation-{user_id}-{amount}",
-            currency="XTR",
-            prices=[LabeledPrice(f"{amount} Telegram Stars", amount)]
-        )
+    except ValueError:
+        await message.reply_text("⚠️ That doesn't look like a valid number. Please try again.")
+        return
+        
+    tier_name = f"{amount} Stars (Custom)"
+    await client.send_invoice(
+        chat_id=user_id,
+        title="Custom Donation",
+        description=f"Thank you for donating {amount} Stars to support us!",
+        payload=f"stars-donation-{user_id}-{amount}",
+        currency="XTR",
+        prices=[LabeledPrice(f"{amount} Telegram Stars", amount)]
+    )
+
 
 @app.on_message(filters.successful_payment)
 async def successful_payment_handler(client: Client, message: Message):
