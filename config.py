@@ -8,11 +8,12 @@ load_dotenv()
 API_ID = int(os.environ.get("API_ID", 0))
 API_HASH = os.environ.get("API_HASH")
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
-MONGO_URI = os.environ.get("MONGO_URI") # <-- NEW
+MONGO_URI = os.environ.get("MONGO_URI")
+# --- NEW: Make sure to cast to int, with a default of 0 if not set ---
+LOG_CHANNEL_ID = int(os.environ.get("LOG_CHANNEL_ID", 0))
 # ----------------
 
 # --- PICTURES ---
-# Replace these with direct links to your images
 START_PIC_URL = "https://graph.org/file/ab1c4882db6a02add069e-2d59575f154d39acda.jpg"
 PROFILE_PIC_URL = "https://graph.org/file/ab1c4882db6a02add069e-2d59575f154d39acda.jpg"
 
@@ -30,15 +31,17 @@ CRYPTO_TEXT = f"""
 **Mᴀɪɴ Cʀʏᴘᴛᴏ Aᴅᴅʀᴇss:**
 
 **BTC:** `135G6kyKpfwZbHXUYu4gsJaoJPBnrDDSbQ`
-
 **TON:** `UQCwKMw3WvaEvZ9SIsmc4Mxuz4Yu_-5SsFb2JUEH70Lz0ssx`
-
 **OPBNB:** `0x456945634e4d9d9b9a6069f72a869963281aa40e`
 
 **ɪғ ʏᴏᴜ ɴᴇᴇᴅ ᴀɴᴏᴛʜᴇʀ ᴄʀʏᴘᴛᴏ ᴀᴅᴅʀᴇss, ᴘʟᴇᴀsᴇ [ᴄᴏɴᴛᴀᴄᴛ ᴍʏ ᴍᴀsᴛᴇʀ ʜᴇʀᴇ](tg://user?id={OWNER_ID}).**
 """
 
-STARS_TEXT = "**How many stars do you want to donate?**"
+STARS_TEXT = "**ʜᴏᴡ ᴍᴀɴʏ sᴛᴀʀs ᴅᴏ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ᴅᴏɴᴀᴛᴇ?**"
+
+STARS_CUSTOM_TEXT = """
+**ᴏᴋᴀʏ, ᴘʟᴇᴀsᴇ sᴇɴᴅ ᴛʜᴇ ᴄᴜsᴛᴏᴍ ᴀᴍᴏᴜɴᴛ ᴏғ sᴛᴀʀs ʏᴏᴜ ᴡɪsʜ ᴛᴏ ᴅᴏɴᴀᴛᴇ ɴᴏᴡ.**
+"""
 
 # --- BUTTONS ---
 MAIN_MENU_BUTTONS = {
