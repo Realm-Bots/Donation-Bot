@@ -71,10 +71,10 @@ async def profile_handler(client: Client, message: Message):
 
     # Construct the profile text using the variables
     profile_text = (
-        "👤 **Your Donation Profile**\n\n"
-        f"**User ID:** `{user_id}`\n"
-        f"**Total Donation:** `{total_donated_display}`\n"
-        f"**Last Donated Tier:** `{last_tier_display}`"
+        "👤 **Yᴏᴜʀ Dᴏɴᴀᴛɪᴏɴ Pʀᴏғɪʟᴇ**\n\n"
+        f"**Usᴇʀ ID:** `{user_id}`\n"
+        f"**Tᴏᴛᴀʟ Dᴏɴᴀᴛɪᴏɴ:** `{total_donated_display}`\n"
+        f"**Lᴀsᴛ Dᴏɴᴀᴛᴇᴅ Tɪᴇʀ:** `{last_tier_display}`"
     )
     
     # Send the photo with the caption, which now works for everyone
@@ -92,7 +92,7 @@ async def leaderboard_handler(client: Client, message: Message):
         await message.reply_text("The leaderboard is empty. Be the first to donate!")
         return
 
-    leaderboard_text = "🏆 **Top 10 Donators** 🏆\n\n"
+    leaderboard_text = "🏆 **Tᴏᴘ 𝟷𝟶 Dᴏɴᴀᴛᴏʀs** 🏆\n\n"
     medals = ["🥇", "🥈", "🥉"]
 
     for i, donor in enumerate(top_donors):
