@@ -1,23 +1,19 @@
-# config.py
+# # Made By @NaapaExtraa For @Realm_Bots
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# --- REQUIRED ---
+# Add these values on .env file
 API_ID = int(os.environ.get("API_ID", 0))
 API_HASH = os.environ.get("API_HASH")
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 MONGO_URI = os.environ.get("MONGO_URI")
-# --- NEW: Make sure to cast to int, with a default of 0 if not set ---
 LOG_CHANNEL_ID = int(os.environ.get("LOG_CHANNEL_ID", 0))
-# ----------------
 
 # --- PICTURES ---
 START_PIC_URL = "https://graph.org/file/34891a7555dcdbf29068e-402ea87b8c7fdc8f23.jpg"
 PROFILE_PIC_URL = "https://graph.org/file/37486760ded5cd4097437-51cf00c61fe05cec37.jpg"
-
-# --- TEXTS ---
 OWNER_ID = 7099729191 
 
 START_TEXT = """
